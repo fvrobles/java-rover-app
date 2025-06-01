@@ -33,4 +33,44 @@ public class AppTest {
         assertThat(outputStream.toString()).isEqualTo(expectedOutput);
     }
 
+    @Test
+    void main_whenNoInputFileProvided_shouldExitWithError() {
+        // Given: no input file argument
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream originalSystemErr = System.err;
+        System.setErr(new PrintStream(outputStream));
+
+        // When: running the main method without arguments
+        try {
+            App.main(new String[] {});
+        } finally {
+            System.setErr(originalSystemErr);
+        }
+
+        // Then: an error message should be printed to stderr
+        String expectedErrorMessage = "Usage: java -jar rover.jar <input-file>\n";
+        assertThat(outputStream.toString()).isEqualTo(expectedErrorMessage);
+    }
+
+    @Test
+    void main_whenInputFileDoesNotExist_shouldExitWithError() {
+        // Given: a non-existent input file
+        String nonExistentFile = "non_existent_file.txt";
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream originalSystemErr = System.err;
+        System.setErr(new PrintStream(outputStream));
+
+        // When: running the main method with the non-existent file
+        try {
+            App.main(new String[] { nonExistentFile });
+        } finally {
+            System.setErr(originalSystemErr);
+        }
+
+        // Then: an error message should be printed to stderr
+        String expectedErrorMessage = "Input file does not exist: " + nonExistentFile + "\n";
+        assertThat(outputStream.toString()).isEqualTo(expectedErrorMessage);
+    }
+
 }
