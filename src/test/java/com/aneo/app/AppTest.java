@@ -76,4 +76,68 @@ public class AppTest {
         assertThat(outputStream.toString()).isEqualTo(expectedErrorMessage);
     }
 
+    @Test
+    void navigate_whenInvalidRoverPositionFormat_shouldExitWithError() {
+        // Given: an input file with invalid rover position format
+        Path invalidInputFile = Path.of("src", "test", "resources", "invalid_position_input.txt");
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream originalSystemErr = System.err;
+        System.setErr(new PrintStream(outputStream));
+
+        // When: running the main method with the invalid input file
+        try {
+            int exitCode = App.navigate(new String[] { invalidInputFile.toAbsolutePath().toString() });
+            assertThat(exitCode).isOne();
+        } finally {
+            System.setErr(originalSystemErr);
+        }
+
+        // Then: an error message should be printed to stderr
+        String expectedErrorMessage = "Invalid rover initial position format\n";
+        assertThat(outputStream.toString()).isEqualTo(expectedErrorMessage);
+    }
+
+    @Test
+    void navigate_whenInvalidRoverInstructionsFormat_shouldExitWithError() {
+        // Given: an input file with invalid rover instructions format
+        Path invalidInputFile = Path.of("src", "test", "resources", "invalid_instruction_input.txt");
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream originalSystemErr = System.err;
+        System.setErr(new PrintStream(outputStream));
+
+        // When: running the main method with the invalid input file
+        try {
+            int exitCode = App.navigate(new String[] { invalidInputFile.toAbsolutePath().toString() });
+            assertThat(exitCode).isOne();
+        } finally {
+            System.setErr(originalSystemErr);
+        }
+
+        // Then: an error message should be printed to stderr
+        String expectedErrorMessage = "Invalid format of rover instructions\n";
+        assertThat(outputStream.toString()).isEqualTo(expectedErrorMessage);
+    }
+    @Test
+    void navigate_whenMissingRoverInstructions_shouldExitWithError() {
+        // Given: an input file with missing rover instructions
+        Path invalidInputFile = Path.of("src", "test", "resources", "missing_instruction_input.txt");
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream originalSystemErr = System.err;
+        System.setErr(new PrintStream(outputStream));
+
+        // When: running the main method with the invalid input file
+        try {
+            int exitCode = App.navigate(new String[] { invalidInputFile.toAbsolutePath().toString() });
+            assertThat(exitCode).isOne();
+        } finally {
+            System.setErr(originalSystemErr);
+        }
+
+        // Then: an error message should be printed to stderr
+        String expectedErrorMessage = "Invalid input format\n";
+        assertThat(outputStream.toString()).isEqualTo(expectedErrorMessage);
+    }
 }
