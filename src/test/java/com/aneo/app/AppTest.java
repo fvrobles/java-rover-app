@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class AppTest {
 
     @Test
-    void main_whenInputFileIsValid_shouldProduceExpectedOutput() throws Exception {
+    void navigate_whenInputFileIsValid_shouldProduceExpectedOutput() throws Exception {
         // Given: a valid input file
         Path inputFile = Path.of("src", "test", "resources", "input.txt");
 
@@ -20,7 +20,8 @@ public class AppTest {
 
         // When: running the main method with the input file
         try {
-            App.main(new String[] { inputFile.toAbsolutePath().toString() });
+            int exitCode = App.navigate(new String[] { inputFile.toAbsolutePath().toString() });
+            assertThat(exitCode).isZero();
         } finally {
             System.setOut(originalSystemOut);
         }
@@ -34,7 +35,7 @@ public class AppTest {
     }
 
     @Test
-    void main_whenNoInputFileProvided_shouldExitWithError() {
+    void navigate_whenNoInputFileProvided_shouldExitWithError() {
         // Given: no input file argument
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         PrintStream originalSystemErr = System.err;
@@ -42,7 +43,8 @@ public class AppTest {
 
         // When: running the main method without arguments
         try {
-            App.main(new String[] {});
+            int exitCode = App.navigate(new String[] {});
+            assertThat(exitCode).isOne();
         } finally {
             System.setErr(originalSystemErr);
         }
@@ -53,7 +55,7 @@ public class AppTest {
     }
 
     @Test
-    void main_whenInputFileDoesNotExist_shouldExitWithError() {
+    void navigate_whenInputFileDoesNotExist_shouldExitWithError() {
         // Given: a non-existent input file
         String nonExistentFile = "non_existent_file.txt";
 
@@ -63,7 +65,8 @@ public class AppTest {
 
         // When: running the main method with the non-existent file
         try {
-            App.main(new String[] { nonExistentFile });
+            int exitCode = App.navigate(new String[] { nonExistentFile });
+            assertThat(exitCode).isOne();
         } finally {
             System.setErr(originalSystemErr);
         }
