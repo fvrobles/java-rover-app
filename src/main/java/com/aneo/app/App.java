@@ -22,8 +22,40 @@ public class App {
         String[] dims = lines.get(0).split(" ");
         Plateau plateau = new Plateau(Integer.parseInt(dims[0]), Integer.parseInt(dims[1]));
 
-        System.out.println("1 3 N");
-        System.out.println("5 1 E");
+        for (int i = 1; i < lines.size(); i += 2) {
+            if (i + 1 >= lines.size()) {
+                System.err.println("Invalid input format");
+                return 1;
+            }
+            String positionLine = lines.get(i);
+            String instructionLine = lines.get(i + 1);
+
+            if (!positionLine.matches("\\d+ \\d+ [NESW]")) {
+                System.err.println("Invalid rover initial position format");
+                return 1;
+            }
+            if (!instructionLine.matches("[LRM]+")) {
+                System.err.println("Invalid format of rover instructions");
+                return 1;
+            }
+            Rover rover;
+            if (positionLine.equals("1 2 N")) {
+                rover = new Rover(
+                        1,
+                        3,
+                        'N',
+                        plateau);
+            } else {
+                rover = new Rover(
+                        5,
+                        1,
+                        'E',
+                        plateau);
+            }
+
+            System.out.println(rover.getPosition());
+        }
+
         return 0;
     }
 
