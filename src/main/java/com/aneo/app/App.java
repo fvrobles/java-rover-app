@@ -38,21 +38,15 @@ public class App {
                 System.err.println("Invalid format of rover instructions");
                 return 1;
             }
-            Rover rover;
-            if (positionLine.equals("1 2 N")) {
-                rover = new Rover(
-                        1,
-                        3,
-                        'N',
-                        plateau);
-            } else {
-                rover = new Rover(
-                        5,
-                        1,
-                        'E',
-                        plateau);
-            }
-
+            String[] positionParts = positionLine.split(" ");
+            Rover rover = new Rover(
+                Integer.parseInt(positionParts[0]),
+                Integer.parseInt(positionParts[1]),
+                positionParts[2].charAt(0),
+                plateau
+            );
+            rover.followInstructions(instructionLine);
+            // Print the final position of the rover
             System.out.println(rover.getPosition());
         }
 
