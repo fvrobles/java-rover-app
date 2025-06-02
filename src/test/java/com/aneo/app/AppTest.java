@@ -35,6 +35,34 @@ public class AppTest {
     }
 
     @Test
+    void navigate_whenValidInputWithMoreCases_shouldProduceExpectedOutput() throws Exception {
+        // Given: a valid input file with multiple rover cases
+        Path inputFile = Path.of("src", "test", "resources", "valid_input_more_cases.txt");
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream originalSystemOut = System.out;
+        System.setOut(new PrintStream(outputStream));
+
+        // When: running the main method with the input file
+        try {
+            int exitCode = App.navigate(new String[] { inputFile.toAbsolutePath().toString() });
+            assertThat(exitCode).isZero();
+        } finally {
+            System.setOut(originalSystemOut);
+        }
+
+        // Then: output displayed should match the final position of the rovers
+        String expectedOutput = """
+                0 0 N
+                5 5 E
+                0 0 S
+                0 3 S
+                0 10 W
+                """;
+        assertThat(outputStream.toString()).isEqualTo(expectedOutput);
+    }
+
+    @Test
     void navigate_whenNoInputFileProvided_shouldExitWithError() {
         // Given: no input file argument
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -119,6 +147,7 @@ public class AppTest {
         String expectedErrorMessage = "Invalid format of rover instructions\n";
         assertThat(outputStream.toString()).isEqualTo(expectedErrorMessage);
     }
+
     @Test
     void navigate_whenMissingRoverInstructions_shouldExitWithError() {
         // Given: an input file with missing rover instructions
