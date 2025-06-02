@@ -1,5 +1,26 @@
 # Java Rover app
-## Usage: `java -jar rover.jar input.txt`
+
+## Usage: 
+To run the application, you need to have Java installed on your machine (JRE or JDK compatible with Java 21). You can run the application using the following command:
+```
+java -jar rover.jar input.txt
+```
+
+## How to build the application:
+1. Clone the repository:
+   ```
+   git clone https://github.com/fvrobles/java-rover-app.git
+   ```
+2. Navigate to the project directory:
+   ```
+   cd ./java-rover-app
+   ```
+3. Build the project using Maven 3.9.7 and Java 21:
+   ```
+    mvn clean package
+    ```
+4. The JAR file will be created in the `target` directory, named `rover.jar`.
+
 
 ## Input file format:
 The first line of input is the upper-right coordinates of the plateau, the
